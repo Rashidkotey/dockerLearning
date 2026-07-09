@@ -1,0 +1,32 @@
+# FROM python:3.9-slim
+# WORKDIR /app
+# RUN apt-get update && apt-get install -y 
+# COPY requirements.txt .
+
+# RUN pip3 install  -r requirements.txt
+# COPY . .
+
+
+# EXPOSE 5003
+# CMD ["python", "page.py"]
+
+
+# Stage 1:Build Stage
+FROM python:3.9-slim as Build
+WORKDIR /app
+#RUN apt-get update && apt-get install -y 
+COPY requirements.txt .
+
+RUN pip3 install  -r requirements.txt
+COPY . .
+
+
+# Stage 2: Production Stage
+FROM python:3.9-slim
+WORKDIR /app
+COPY --from=Build /usr/local /usr/local
+
+COPY --from=Build /app /app
+
+EXPOSE 5003
+CMD ["python", "page.py"]

@@ -1,0 +1,31 @@
+# version: '3.8'
+
+# services:
+#   web:
+#     build: .
+#     ports:
+#       - "5003:5003"
+#     depends_on:
+#       - redis-db
+
+#   redis-db:
+#     image: redis:7.0.1
+#     ports:
+#       - "6379:6379"
+
+
+# This is for multistage
+version: '3.8'
+
+services:
+  web:
+    image: flask-redis-app:multistage
+    ports:
+      - "5003:5003"
+    depends_on:
+      - redis-db
+
+  redis-db:
+    image: redis:7.0.1
+    ports:
+      - "6379:6379"
